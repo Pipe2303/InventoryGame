@@ -1,23 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
-public class DragNDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragNDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerUpHandler
 {
     public Canvas canvas;
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
     public Vector3 startPosition;
+    public TextMeshProUGUI description;
+    public float value = 10;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+        description = GameObject.Find("Info").GetComponent<TextMeshProUGUI>();
     }
     
     public void OnBeginDrag(PointerEventData eventData)
@@ -49,14 +53,40 @@ public class DragNDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, 
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("OnPointerDown");
+        ShowDescription();
     }
-    //whe the item is selected (by Selectable UI) ShowDescription is called
+    //when the item is deselected (by Selectable UI) the description is set to empty
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        Debug.Log("OnPointerUp");
+        description.text = "";
+    }
     
-    
-    
+    //when the item is selected (by Selectable UI) ShowDescription is called
     public void ShowDescription()
     {
-        Debug.Log("ShowDescription");
+        string tag = gameObject.tag;
+        switch (tag)
+        {
+            case "Potion":
+                description.text = "Potion: Heals +"+value+" HP";
+                break;
+            case "Weapon":
+                description.text = "Weapon: +"+value+" Attack";
+                break;
+            case "Shield":
+                description.text = "Shield: +"+value+" Defense";
+                break;
+            case "Power":
+                description.text = "Power: +"+value+" Power";
+                break;
+            case "Basic":
+                description.text = "Basic: No special effects";
+                break;
+            case "BasicB":
+                description.text = "BasicB: No special effects";
+                break;
+        }
     }
 }
 
