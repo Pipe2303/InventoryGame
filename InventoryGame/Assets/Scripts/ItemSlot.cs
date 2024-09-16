@@ -14,7 +14,6 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     //if the slot is empty and the item is of the correct tag, let the item be dropped in the slot if not return the item to its original position
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("OnDrop");
         
         if (eventData.pointerDrag != null)
         {
@@ -73,6 +72,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
                 {
                     //return the item to the last slot it was into position
                     dragNDrop.transform.position = dragNDrop.startPosition;
+                    Debug.Log(dragNDrop.startPosition);
 
                 }
             }
